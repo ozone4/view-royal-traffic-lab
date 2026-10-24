@@ -1,0 +1,19 @@
+# Local dependencies and build output
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+.DS_Store
+
+# Generated runs, diagnostics, private data and credentials
+runs/
+data/raw/
+data/private/
+private/
+.env*
+!.env.example

@@ -1,0 +1,135 @@
+version = 1
+revision = 3
+requires-python = ">=3.11"
+
+[[package]]
+name = "colorama"
+version = "0.4.6"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44", size = 27697, upload-time = "2022-10-25T02:36:22.414Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6", size = 25335, upload-time = "2022-10-25T02:36:20.889Z" },
+]
+
+[[package]]
+name = "eclipse-sumo"
+version = "1.28.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sumo-data" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d9/3d/a05bfded39ae2edfec9bf49b1f1bef1ba40b3dde7f7c661c4a1300949e2f/eclipse_sumo-1.28.0-py3-none-macosx_15_0_arm64.whl", hash = "sha256:bf9babaa01976356255a91a7fe715b285663c22fd6035b19bfb7e9bf46fff348", size = 54963592, upload-time = "2026-10-08T09:29:17.557Z" },
+    { url = "https://files.pythonhosted.org/packages/5b/f2/af4d92d3f415f1a54286e80525db8366a459b959ba1786410641ceda6021/eclipse_sumo-1.28.0-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:8af54645cf25e28eeed5e359256e470a87b8c039e54f25027edfccd194bb3561", size = 78718270, upload-time = "2026-10-08T09:29:22.795Z" },
+    { url = "https://files.pythonhosted.org/packages/43/c6/16c5ac778c77dde18c7c1a55425128fcd16a5ca33b16184f6f9d98be8835/eclipse_sumo-1.28.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:8d96fb90562085524d24cccbb884853e70ee2f0ceb6464d0c055be9f9506240c", size = 90369620, upload-time = "2026-10-08T09:29:28.137Z" },
+    { url = "https://files.pythonhosted.org/packages/20/e5/080446da257fe3366adf02dfe7c22cb9442d9777672a60b5c2f504eca5ef/eclipse_sumo-1.28.0-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:7e94b2da13d20eb4e31b76fcbca9101ec798fb71efee0ca1c0b28ec3e1d0c1a1", size = 127791557, upload-time = "2026-10-08T09:29:34.341Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/12/b37bcb407bdfe811e1a38179b4abc3142290e589104a33a8f88a3e661eb0/eclipse_sumo-1.28.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:ec7042794e5ab1d806b90a5983aeda4a978dc4224141b94c0ff3affeeb4ec977", size = 148526232, upload-time = "2026-10-08T09:29:41.344Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/58/9f46c983b516d758065d99bcffe26ebd196f2529470c904f6835580a345a/eclipse_sumo-1.28.0-py3-none-win_amd64.whl", hash = "sha256:c8c898237d0a98f7f87ae762195a62114baca7b54394a430a06bbfc166145aa8", size = 158043683, upload-time = "2026-10-08T09:29:49.08Z" },
+]
+
+[[package]]
+name = "iniconfig"
+version = "2.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/e1/2069291243c926a2ff1cd706c7f3eeb9b62144bf60f77c9fb9ff2fb26bd3/iniconfig-2.3.1.tar.gz", hash = "sha256:67f4b9c50da0dedf52af349e7749a80a9057a5031199791b906c3bb3ae878960", size = 21209, upload-time = "2026-10-06T22:48:38.076Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl", hash = "sha256:9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7", size = 7552, upload-time = "2026-10-06T22:48:36.959Z" },
+]
+
+[[package]]
+name = "packaging"
+version = "26.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/fa/3944b40b07da9ce895c0e6303a5ab7d53da063554f534556b134a54d6093/packaging-26.3.tar.gz", hash = "sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79", size = 313412, upload-time = "2026-08-04T18:15:28.737Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl", hash = "sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c", size = 129956, upload-time = "2026-08-04T18:15:27.159Z" },
+]
+
+[[package]]
+name = "pluggy"
+version = "1.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/db/7fc19e6f2dc92a966727031389fc2e08b558f0f25eb7403c1119ad4713cd/pluggy-1.7.0.tar.gz", hash = "sha256:d1eaa46ebb595891b860ab086b4d09c8588af65ebd4361b8e8f4bb8920b90ba8", size = 123304, upload-time = "2026-10-15T09:50:58.343Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/40/9e/2b38731e0fc536806f16490e1a12d7f0dc2a1235aa8cc07bcc75416a7daa/pluggy-1.7.0-py3-none-any.whl", hash = "sha256:7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec", size = 27082, upload-time = "2026-10-15T09:50:56.808Z" },
+]
+
+[[package]]
+name = "pygments"
+version = "2.21.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/2e/ced460408999b33da6b31b0021b0f37d329e202d4169aeb164493778f25b/pygments-2.21.0.tar.gz", hash = "sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c", size = 5005329, upload-time = "2026-08-17T08:02:48.824Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl", hash = "sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9", size = 1250147, upload-time = "2026-08-17T08:02:44.912Z" },
+]
+
+[[package]]
+name = "pytest"
+version = "9.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "iniconfig" },
+    { name = "packaging" },
+    { name = "pluggy" },
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e4/47/b9efed96c114afcfa3c9d3fe98a76a1d14c74a9e266d397cf6eb64be5e01/pytest-9.1.1.tar.gz", hash = "sha256:1088fbde8f2b49d95a549a195707afa7a76a3ce9bcadc26b6d71f0ffda5fe313", size = 1636369, upload-time = "2026-06-19T10:58:32.857Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl", hash = "sha256:37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c", size = 386536, upload-time = "2026-06-19T10:58:31.347Z" },
+]
+
+[[package]]
+name = "sumo-data"
+version = "1.28.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/69/5272a2b8a88034fe2adea6869a04eb555695f257292c68593dd6226f5e01/sumo_data-1.28.0-py3-none-any.whl", hash = "sha256:1f934259d328ed42d12ae0852bae654c79457debbf68b51406aa817c2088b037", size = 16345159, upload-time = "2026-10-08T09:33:18.063Z" },
+    { url = "https://files.pythonhosted.org/packages/d5/95/8c5650c55da61caab4282bceec8a2c475a57ffb1fa6672799161464dbf22/sumo_data-1.28.0-py3-none-macosx_15_0_arm64.whl", hash = "sha256:6d488fba4f9f0398964dae165c32a21545a1cde71cde1755cca0ab398ec6a8f6", size = 120801605, upload-time = "2026-10-08T09:33:28.388Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/44/28876275739735594db402e23ff9d190fee6d30634e77ba47fe476135b30/sumo_data-1.28.0-py3-none-win_amd64.whl", hash = "sha256:48120c1b0174fe7af69a5711d936fc4d3b6d41f28e48326602d7d6d6b6efcc42", size = 116048875, upload-time = "2026-10-08T09:33:34.732Z" },
+]
+
+[[package]]
+name = "sumolib"
+version = "1.28.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/06/87b2ece00c650531e3f776a809982e488a8f6a4dd109d7e810381c5d1583/sumolib-1.28.0.tar.gz", hash = "sha256:8547d6c699a9a97c00a539869f58676f7d8c70afa06a965b4af7f8a870739177", size = 142390, upload-time = "2026-10-08T09:33:39.811Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/97/3c/bb2ba08247793748be59bf93759d1452ed1201e6f143dc98fc51511c87d4/sumolib-1.28.0-py2.py3-none-any.whl", hash = "sha256:eda134defdcc39b966756cc00828ecbabfc35e0631326971f2fe1dea8acd9239", size = 236390, upload-time = "2026-10-08T09:33:37.547Z" },
+]
+
+[[package]]
+name = "traci"
+version = "1.28.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sumolib" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/04/f7/43e04a40da868af0fdc767d417ea27b89958d3b2ec0ae2de0860519e10f9/traci-1.28.0.tar.gz", hash = "sha256:f53483a7f3a15910b88579cfb4c72a8e304364e58a2b3f0a1acbcf460598c6b3", size = 103837, upload-time = "2026-10-08T10:42:32.77Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9a/a1/a95328ff82da409b46d5ed2723b70dff6a5445776ad95c34b5d1a84de7f2/traci-1.28.0-py2.py3-none-any.whl", hash = "sha256:cbc88b5b38b60c0dba4939f9171615a97bd12dd113c5bc7730d76dfe2db73881", size = 139433, upload-time = "2026-10-08T09:33:38.705Z" },
+]
+
+[[package]]
+name = "view-royal-traffic-lab"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "eclipse-sumo" },
+    { name = "sumolib" },
+    { name = "traci" },
+]
+
+[package.optional-dependencies]
+test = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "eclipse-sumo", specifier = "==1.28.0" },
+    { name = "pytest", marker = "extra == 'test'", specifier = ">=8,<10" },
+    { name = "sumolib", specifier = "==1.28.0" },
+    { name = "traci", specifier = "==1.28.0" },
+]
+provides-extras = ["test"]

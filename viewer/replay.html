@@ -1,0 +1,176 @@
+<!doctype html>
+<!--
+Source repository: ozone4/view-royal-traffic-lab on GitHub
+
+MIT License
+
+Copyright (c) 2026 Owen Marshall
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traffic Lab replay</title>
+<style>
+:root { color-scheme: light dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --paper:#f6f7f8; --ink:#17212b; --muted:#5b6773; --panel:#fff; --line:#d7dce1; --alert:#8d2600; --accent:#175c91; --n:#006f95; --e:#8d3f00; --s:#6d397e; --w:#1d6d43; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); line-height:1.45; overflow-x:hidden; }
+header, main, footer { max-width:1240px; min-width:0; margin:auto; padding:1rem clamp(1rem, 3vw, 2rem); }
+header { border-bottom:1px solid var(--line); background:var(--panel); }
+h1 { margin:0 0 .25rem; font-size:clamp(1.35rem, 3vw, 2rem); }
+h2 { font-size:1.1rem; margin-top:0; }
+p { margin:.35rem 0; }
+.small, .definition { color:var(--muted); font-size:.9rem; }
+.badge { display:inline-block; margin:.35rem .35rem 0 0; padding:.18rem .45rem; border:1px solid currentColor; border-radius:.4rem; font-size:.86rem; font-weight:650; }
+.warning { display:none; border-left:4px solid var(--alert); padding:.75rem 1rem; margin:0 0 1rem; background:color-mix(in srgb, var(--alert) 9%, var(--panel)); color:var(--alert); }
+.controls, .panel { background:var(--panel); border:1px solid var(--line); border-radius:.6rem; padding:1rem; margin:0 0 1rem; }
+.controls { display:flex; flex-wrap:wrap; gap:.8rem 1.2rem; align-items:end; min-width:0; }
+.control { display:grid; gap:.25rem; min-width:0; max-width:100%; }
+.controls .control:first-child { flex:1 1 16rem; }
+button, select, input { font:inherit; }
+button, select { min-height:2.4rem; max-width:100%; padding:.35rem .55rem; }
+select { min-width:0; width:100%; }
+input[type="range"] { min-width:14rem; }
+.canvas-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1rem; }
+.run-view { background:var(--panel); border:1px solid var(--line); border-radius:.6rem; overflow:hidden; }
+.run-view h2, .canvas-status, .run-changes { padding:0 1rem; }
+.run-view h2 { margin:.8rem 0 .3rem; }
+.run-changes { font-size:.88rem; color:var(--muted); }
+summary { cursor:pointer; font-weight:700; }
+details[open] summary { margin-bottom:1rem; }
+#play-button { background:var(--accent); color:var(--panel); border:1px solid var(--accent); border-radius:.35rem; font-weight:650; }
+canvas { display:block; width:100%; aspect-ratio:1.5; background:#eaf0ed; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.legend { padding:.7rem 1rem; display:flex; flex-wrap:wrap; gap:.6rem; font-size:.87rem; }
+.dot { width:.8rem; height:.8rem; border-radius:50%; display:inline-block; vertical-align:middle; }
+.n { background:var(--n); }.e { background:var(--e); }.s { background:var(--s); }.w { background:var(--w); }
+.table-wrap { overflow-x:auto; }
+table { width:100%; min-width:0; table-layout:fixed; border-collapse:collapse; font-size:.92rem; }
+th, td { overflow-wrap:anywhere; border-bottom:1px solid var(--line); padding:.5rem; text-align:left; vertical-align:top; }
+th { font-weight:700; white-space:normal; }
+.metric-table th:first-child { width:46%; }
+.signal-light { display:inline-block; min-width:1.1rem; margin:0 .08rem; border-radius:.2rem; color:#fff; font-size:.8rem; font-weight:700; line-height:1.35; text-align:center; }
+.signal-light.G, .signal-light.g { background:#147a43; }.signal-light.r { background:#ad3030; }.signal-light.y, .signal-light.Y { color:#1f2529; background:#e0ae21; }.signal-light.unknown { background:#5b6773; }
+.metadata { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:.75rem; }
+.metadata dl { margin:0; }.metadata dt { font-weight:700; }.metadata dd { margin:0 0 .6rem; overflow-wrap:anywhere; }
+footer { color:var(--muted); font-size:.88rem; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto; } }
+@media (max-width:720px) { .canvas-grid { grid-template-columns:1fr; } header, main, footer { padding:1rem; } .controls { display:grid; grid-template-columns:minmax(0, 1fr); } .control, .controls .control:first-child { width:100%; min-width:0; } input[type="range"] { min-width:100%; } }
+@media (prefers-color-scheme: dark) { :root { --paper:#12171b; --ink:#e7edf0; --muted:#b5c0c7; --panel:#1b2329; --line:#3b474f; --alert:#ffb49a; --accent:#7ac3ff; } canvas { background:#21362e; } }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="bundle-title">Traffic Lab replay</h1>
+  <p id="bundle-label" class="badge"></p>
+  <p class="badge">Vehicle-only model</p>
+  <p class="small">Actual SUMO positions and timestamps. Vehicle markers are enlarged for readability. Playback does not calculate the outcome metrics.</p>
+</header>
+<main>
+  <section id="comparison-warning" class="warning" role="alert" aria-live="polite"><strong>Comparison warning.</strong> One or more displayed runs are invalid or have diagnostic warnings. Do not treat this display as a reassuring comparison.</section>
+  <section class="controls" aria-label="Replay controls">
+    <label class="control">Scenario / proposal<select id="proposal-select" aria-label="Scenario or proposal"></select></label>
+    <button id="play-button" type="button" aria-pressed="false">Play</button>
+    <label class="control">Simulation time <input id="seek" type="range" min="0" max="0" value="0" step="1" aria-describedby="time-note"></label>
+    <label class="control">Playback speed<select id="speed-select" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+    <p id="time-note" class="small">Simulation time is sampled engine time; at 1×, each displayed frame waits for its recorded timestamp gap. Playback speed changes only display timing.</p>
+    <p id="sample-interval" class="small"></p>
+  </section>
+  <p id="frame-status" role="status" aria-live="polite"></p>
+  <section class="canvas-grid" aria-label="Side-by-side replay map">
+    <article class="run-view" id="left-view"><h2 id="left-title">Baseline</h2><p class="run-changes" id="left-changes"></p><p class="canvas-status" id="left-status"></p><canvas id="left-canvas" width="720" height="480" role="img" aria-label="Baseline replay map"></canvas><div class="legend" aria-label="Vehicle origin legend"><span><i class="dot n"></i> North origin</span><span><i class="dot e"></i> East origin</span><span><i class="dot s"></i> South origin</span><span><i class="dot w"></i> West origin</span></div></article>
+    <article class="run-view" id="right-view"><h2 id="right-title">Proposal</h2><p class="run-changes" id="right-changes"></p><p class="canvas-status" id="right-status"></p><canvas id="right-canvas" width="720" height="480" role="img" aria-label="Proposal replay map"></canvas><div class="legend" aria-label="Vehicle origin legend"><span><i class="dot n"></i> North origin</span><span><i class="dot e"></i> East origin</span><span><i class="dot s"></i> South origin</span><span><i class="dot w"></i> West origin</span></div></article>
+  </section>
+  <section class="panel" aria-labelledby="summary-heading"><h2 id="summary-heading">Run summary</h2><p class="definition">Completed averages cover completed trips only. Values may be censored by the finite simulation horizon; a lower value is not a safety or winner claim.</p><div class="table-wrap"><table class="metric-table"><thead><tr><th>Metric</th><th>Baseline</th><th>Proposal</th></tr></thead><tbody id="summary-body"></tbody></table></div></section>
+  <section class="panel" aria-labelledby="approach-heading"><h2 id="approach-heading">Per-approach outcomes</h2><p class="definition">Approach means vehicle origin, not current heading. Queue counts are sampled stopped vehicles on inbound lanes, not queue metres.</p><div class="table-wrap"><table class="metric-table"><thead><tr><th>Approach / metric</th><th>Baseline</th><th>Proposal</th></tr></thead><tbody id="approach-body"></tbody></table></div></section>
+  <details class="panel" id="definitions-panel"><summary id="definitions-heading">Metric definitions</summary><div id="definitions" class="metadata"></div></details>
+  <details class="panel" id="provenance-panel"><summary id="details-heading">Provenance, declared changes and limitations</summary><div id="details" class="metadata"></div></details>
+</main>
+<footer>Static self-contained replay. Engine frame data, diagnostics, metadata, declared changes and limitations are preserved in this artifact.</footer>
+<script id="traffic-lab-data" type="application/json">__TRAFFIC_LAB_BUNDLE_JSON__</script>
+<script>
+(() => {
+  'use strict';
+  const bundle = JSON.parse(document.getElementById('traffic-lab-data').textContent);
+  const $ = (id) => document.getElementById(id);
+  const color = {N:'#006f95', E:'#8d3f00', S:'#6d397e', W:'#1d6d43'};
+  const state = { left: null, right: null, frame: 0, playing: false, last: null, rate: 1, rafId: null };
+  const metrics = [
+    ['Requested', 'requested', 'count'], ['Inserted', 'inserted', 'count'], ['Completed', 'completed', 'count'],
+    ['Active at horizon', 'active', 'count'], ['Not inserted', 'not_inserted', 'count'], ['Removed', 'removed', 'count'],
+    ['Outside horizon', 'outside_horizon', 'count'], ['Maximum stopped vehicles', 'max_stopped_vehicles', 'count'],
+    ['Completed mean time loss', 'completed_mean_time_loss_seconds', 'seconds'], ['Completed mean duration', 'completed_mean_duration_seconds', 'seconds'],
+    ['Inserted mean departure delay', 'inserted_mean_depart_delay_seconds', 'seconds'], ['Frame count', null, 'frames']
+  ];
+  function string(value) { return value === null || value === undefined ? 'Not available' : String(value); }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  function add(parent, tag, value) { const node = document.createElement(tag); node.textContent = string(value); parent.appendChild(node); return node; }
+  function availableProposals() { return bundle.runs.filter((run) => run.variant !== 'baseline'); }
+  function label(run) { const names = {baseline:'Baseline signals', rebalanced:'Alternative signal timing', constrained:'Restricted eastbound exit'}; return run ? (names[run.variant] || run.title) : 'Not available'; }
+  function maxFrameCount() { return Math.max(...[state.left, state.right].filter(Boolean).map((run) => run.frames.length)); }
+  function chooseRuns() {
+    const baseline = bundle.runs.find((run) => run.variant === 'baseline') || bundle.runs[0];
+    const selected = $('proposal-select').value;
+    state.left = baseline;
+    state.right = bundle.runs.find((run) => run.run_id === selected) || availableProposals()[0] || null;
+    if (state.right && state.right.run_id === state.left.run_id) state.right = null;
+    state.frame = Math.min(state.frame, Math.max(0, maxFrameCount() - 1));
+    $('right-view').hidden = !state.right;
+    $('seek').max = String(Math.max(0, maxFrameCount() - 1));
+    $('seek').value = String(state.frame);
+    renderAll();
+  }
+  function commonBounds(runs) {
+    const values = runs.filter(Boolean).map((run) => run.geometry.bounds);
+    return [Math.min(...values.map((b) => b[0])), Math.min(...values.map((b) => b[1])), Math.max(...values.map((b) => b[2])), Math.max(...values.map((b) => b[3]))];
+  }
+  function frameFor(run) { return run ? run.frames[Math.min(state.frame, run.frames.length - 1)] : null; }
+  function draw(run, canvas, bounds) {
+    const ctx = canvas.getContext('2d'); const width = canvas.width; const height = canvas.height; const pad = 28;
+    ctx.clearRect(0, 0, width, height); ctx.fillStyle = '#eaf0ed'; ctx.fillRect(0, 0, width, height);
+    if (!run) return;
+    const [minX, minY, maxX, maxY] = bounds; const scale = Math.min((width - 2 * pad) / (maxX - minX), (height - 2 * pad) / (maxY - minY));
+    const offsetX = (width - (maxX - minX) * scale) / 2; const offsetY = (height - (maxY - minY) * scale) / 2;
+    const map = (x, y) => [offsetX + (x - minX) * scale, height - offsetY - (y - minY) * scale];
+    for (const junction of run.geometry.junctions) { const shape = junction.shape; if (!shape.length) continue; ctx.beginPath(); shape.forEach((point, index) => { const p = map(point[0], point[1]); if (index) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.closePath(); ctx.fillStyle = '#b7bcc0'; ctx.fill(); }
+    for (const lane of run.geometry.lanes) { const shape = lane.shape; if (!shape.length) continue; ctx.beginPath(); shape.forEach((point, index) => { const p = map(point[0], point[1]); if (index) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.strokeStyle = '#687178'; ctx.lineWidth = Math.max(1, (lane.width || 1) * scale); ctx.lineCap = 'round'; ctx.stroke(); }
+    const frame = frameFor(run); for (const vehicle of frame.vehicles) { const p = map(vehicle.x, vehicle.y); const rad = Math.atan2(-Math.cos(vehicle.angle * Math.PI / 180), Math.sin(vehicle.angle * Math.PI / 180)); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(rad); ctx.fillStyle = color[vehicle.approach] || '#222'; ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(-6, -4); ctx.lineTo(-6, 4); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  }
+  function format(value, kind) { if (value === null || value === undefined) return 'Not available'; if (kind === 'seconds') return `${value} s`; return String(value); }
+  function renderSummary() { const body = $('summary-body'); clear(body); for (const [name, key, kind] of metrics) { const row = document.createElement('tr'); add(row, 'th', name); const leftValue = kind === 'frames' ? state.left.frames.length : state.left.metrics[key]; const rightValue = state.right ? (kind === 'frames' ? state.right.frames.length : state.right.metrics[key]) : null; add(row, 'td', format(leftValue, kind)); add(row, 'td', format(rightValue, kind)); body.appendChild(row); } }
+  function renderApproaches() { const body = $('approach-body'); clear(body); for (const direction of ['N', 'E', 'S', 'W']) { for (const key of ['requested', 'completed', 'active', 'not_inserted', 'removed', 'max_stopped_vehicles']) { const row = document.createElement('tr'); add(row, 'th', `${{N:'North',E:'East',S:'South',W:'West'}[direction]} origin: ${key.replaceAll('_', ' ')}`); add(row, 'td', state.left.metrics.per_approach[direction][key]); add(row, 'td', state.right ? state.right.metrics.per_approach[direction][key] : 'Not available'); body.appendChild(row); } } }
+  function renderDefinitions() { const definitions = $('definitions'); clear(definitions); for (const run of [state.left, state.right].filter(Boolean)) { const block = document.createElement('section'); add(block, 'h3', label(run)); const dl = document.createElement('dl'); for (const [name, definition] of Object.entries(run.metrics.definitions)) { add(dl, 'dt', name.replaceAll('_', ' ')); add(dl, 'dd', definition); } block.appendChild(dl); definitions.appendChild(block); } }
+  function metadata(run) { const block = document.createElement('section'); add(block, 'h3', label(run)); const dl = document.createElement('dl'); const fields = ['engine_version', 'seed', 'demand_scale', 'demand_sha256', 'network_sha256', 'scenario_sha256', 'horizon_seconds', 'step_seconds', 'warmup_seconds', 'arrival_window_seconds', 'frame_interval_seconds', 'geometry_status', 'demand_status', 'control_status', 'model_status', 'modes', 'units']; for (const field of fields) { add(dl, 'dt', field.replaceAll('_', ' ')); add(dl, 'dd', Array.isArray(run.metadata[field]) ? run.metadata[field].join(', ') : run.metadata[field]); } add(dl, 'dt', 'Declared changes'); add(dl, 'dd', run.changes.join('; ') || 'None declared'); add(dl, 'dt', 'Limitations'); add(dl, 'dd', run.limitations.join('; ') || 'None declared'); add(dl, 'dt', 'Diagnostics'); add(dl, 'dd', `valid: ${run.diagnostics.valid}; collisions: ${run.diagnostics.collisions}; teleports: ${run.diagnostics.teleports}; unexpected removals: ${run.diagnostics.unexpected_removals}; warnings: ${run.diagnostics.warnings.join('; ') || 'none'}`); block.appendChild(dl); return block; }
+  function renderDetails() { const details = $('details'); clear(details); details.appendChild(metadata(state.left)); if (state.right) details.appendChild(metadata(state.right)); }
+  function signalLabel(code) { return code === 'G' || code === 'g' ? 'green' : code === 'y' || code === 'Y' ? 'yellow' : code === 'r' ? 'red' : 'unknown signal state'; }
+  function renderSignalStatus(id, frame) { const node = $(id); clear(node); add(node, 'span', 'Signal state (raw controller link order; no compass mapping is supplied): '); if (!frame.signals.length) add(node, 'span', 'none sampled'); for (const signal of frame.signals) { add(node, 'span', `${signal.id}: `); for (const code of signal.state) { const light = add(node, 'span', code); light.className = `signal-light ${/^[GgryY]$/.test(code) ? code : 'unknown'}`; light.setAttribute('aria-label', signalLabel(code)); } } add(node, 'span', ` · stopped vehicles by origin North/East/South/West: ${['N','E','S','W'].map((d) => frame.queues[d]).join('/')}`); }
+  function renderMaps() { const bounds = commonBounds([state.left, state.right]); const leftFrame = frameFor(state.left); const rightFrame = frameFor(state.right); $('left-title').textContent = label(state.left); $('right-title').textContent = label(state.right); $('left-changes').textContent = state.left.changes.join(' '); $('right-changes').textContent = state.right ? state.right.changes.join(' ') : ''; renderSignalStatus('left-status', leftFrame); if (rightFrame) renderSignalStatus('right-status', rightFrame); else $('right-status').textContent = ''; draw(state.left, $('left-canvas'), bounds); draw(state.right, $('right-canvas'), bounds); }
+  function renderWarning() { const runs = [state.left, state.right].filter(Boolean); const node = $('comparison-warning'); let message = ''; if (runs.some(run => !run.diagnostics.valid)) { message = 'Invalid run diagnostics. These results must not support a proposal comparison. See provenance for the engine errors.'; } else if (runs.some(run => run.metrics.active || run.metrics.not_inserted)) { message = 'Unfinished demand. ' + runs.map(run => `${label(run)}: ${run.metrics.active} active and ${run.metrics.not_inserted} not inserted at the end.`).join(' ') + ' Completed-trip averages exclude these vehicles.'; } else if (runs.some(run => run.diagnostics.warnings.length)) { message = 'Run warnings. ' + runs.map(run => run.diagnostics.warnings.join(' ')).join(' '); } if (node.textContent !== message) node.textContent = message; node.style.display = message ? 'block' : 'none'; }
+  function renderAll() { const leftFrame = frameFor(state.left); const rightFrame = frameFor(state.right); $('frame-status').textContent = `Sample ${state.frame + 1} of ${maxFrameCount()} · simulation time: ${leftFrame.t} s${rightFrame ? ` / ${rightFrame.t} s` : ''} · ${leftFrame.vehicles.length ? `${leftFrame.vehicles.length} sampled vehicle(s)` : 'No sampled vehicles in this frame'}`; $('sample-interval').textContent = `Sample interval: ${state.left.metadata.frame_interval_seconds} s (declared engine-frame cadence; frame timestamps shown above are the replay clock).`; renderMaps(); renderSummary(); renderApproaches(); renderDefinitions(); renderDetails(); renderWarning(); window.trafficLab.state = state; }
+  function scheduleTick() { if (state.playing && state.rafId === null) state.rafId = requestAnimationFrame(tick); }
+  function tick(now) { state.rafId = null; if (!state.playing) return; if (state.last === null) state.last = now; const frames = state.left.frames; const next = state.frame + 1; if (next >= frames.length) { state.playing = false; $('play-button').textContent = 'Play'; $('play-button').setAttribute('aria-pressed', 'false'); return; } const delay = Math.max(0, (frames[next].t - frames[state.frame].t) * 1000 / state.rate); if (now - state.last >= delay) { state.frame = next; $('seek').value = String(state.frame); state.last = now; renderAll(); } scheduleTick(); }
+  function togglePlay() { state.playing = !state.playing; state.last = null; $('play-button').textContent = state.playing ? 'Pause' : 'Play'; $('play-button').setAttribute('aria-pressed', String(state.playing)); scheduleTick(); }
+  function initialise() { $('bundle-title').textContent = bundle.title; $('bundle-label').textContent = bundle.label; const select = $('proposal-select'); const proposals = availableProposals(); if (!proposals.length) { const option = document.createElement('option'); option.value = ''; option.textContent = 'Single-run replay'; select.appendChild(option); select.disabled = true; } else { proposals.forEach((run) => { const option = document.createElement('option'); option.value = run.run_id; option.textContent = label(run); select.appendChild(option); }); } select.addEventListener('change', chooseRuns); $('play-button').addEventListener('click', togglePlay); $('seek').addEventListener('input', () => { state.frame = Number($('seek').value); renderAll(); }); $('speed-select').addEventListener('change', () => { state.rate = Number($('speed-select').value); }); chooseRuns(); window.trafficLab = { state, bundle, play: togglePlay }; }
+  window.trafficLab = {};
+  initialise();
+})();
+</script>
+</body>
+</html>

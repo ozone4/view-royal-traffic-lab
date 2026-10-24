@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Set up uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          enable-cache: true
+      - name: Install locked environment
+        run: uv sync --locked --extra test
+      - name: Test with warnings treated as errors
+        run: .venv/bin/python -m pytest -q -W error
+      - name: Generate and audit real simulation results
+        run: |
+          .venv/bin/traffic-lab demo --output runs/ci-demo
+          .venv/bin/python scripts/audit_artifacts.py runs/ci-demo/bundle.json
+      - name: Set up Node for browser checks
+        if: runner.os == 'Linux'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install browser QA dependencies
+        if: runner.os == 'Linux'
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium webkit
+      - name: Check desktop and mobile-sized browsers
+        if: runner.os == 'Linux'
+        run: |
+          export WEBKIT_EXECUTABLE="$(node -p "require('playwright').webkit.executablePath()")"
+          npm run verify:browser -- runs/ci-demo/replay.html runs/ci-browser

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "title": "Synthetic four-approach crossroads",
+  "label": "Synthetic demonstration, not calibrated to View Royal",
+  "horizon_seconds": 900,
+  "step_seconds": 0.5,
+  "warmup_seconds": 0,
+  "arrival_window_seconds": 600,
+  "frame_interval_seconds": 2,
+  "modes": ["passenger"],
+  "units": "metres, seconds, metres/second",
+  "evidence": {
+    "geometry_status": "synthetic",
+    "demand_status": "synthetic_frozen",
+    "control_status": "synthetic",
+    "model_status": "demonstration_only"
+  },
+  "lanes": {
+    "N": {"edge": "N_in", "length": 250}, "E": {"edge": "E_in", "length": 250},
+    "S": {"edge": "S_in", "length": 250}, "W": {"edge": "W_in", "length": 250}
+  },
+  "movements": [
+    {"id":"N-left","approach":"N","lanes":["N"],"route":"N_in_E_out","rate_per_hour":240},
+    {"id":"N-through","approach":"N","lanes":["N"],"route":"N_in_S_out","rate_per_hour":480},
+    {"id":"N-right","approach":"N","lanes":["N"],"route":"N_in_W_out","rate_per_hour":180},
+    {"id":"E-left","approach":"E","lanes":["E"],"route":"E_in_S_out","rate_per_hour":300},
+    {"id":"E-through","approach":"E","lanes":["E"],"route":"E_in_W_out","rate_per_hour":600},
+    {"id":"E-right","approach":"E","lanes":["E"],"route":"E_in_N_out","rate_per_hour":180},
+    {"id":"S-left","approach":"S","lanes":["S"],"route":"S_in_W_out","rate_per_hour":240},
+    {"id":"S-through","approach":"S","lanes":["S"],"route":"S_in_N_out","rate_per_hour":480},
+    {"id":"S-right","approach":"S","lanes":["S"],"route":"S_in_E_out","rate_per_hour":180},
+    {"id":"W-left","approach":"W","lanes":["W"],"route":"W_in_N_out","rate_per_hour":300},
+    {"id":"W-through","approach":"W","lanes":["W"],"route":"W_in_E_out","rate_per_hour":600},
+    {"id":"W-right","approach":"W","lanes":["W"],"route":"W_in_S_out","rate_per_hour":180}
+  ],
+  "legal_routes": ["N_in_E_out","N_in_S_out","N_in_W_out","E_in_S_out","E_in_W_out","E_in_N_out","S_in_W_out","S_in_N_out","S_in_E_out","W_in_N_out","W_in_E_out","W_in_S_out"],
+  "controls": {
+    "baseline": {"phases": [
+      {"approach":"N","state":"GGGrrrrrrrrr","duration":22},{"state":"yyyrrrrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"E","state":"rrrGGGrrrrrr","duration":22},{"state":"rrryyyrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"S","state":"rrrrrrGGGrrr","duration":22},{"state":"rrrrrryyyrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"W","state":"rrrrrrrrrGGG","duration":22},{"state":"rrrrrrrrryyy","duration":3},{"state":"rrrrrrrrrrrr","duration":2}
+    ]},
+    "rebalanced": {"phases": [
+      {"approach":"N","state":"GGGrrrrrrrrr","duration":15},{"state":"yyyrrrrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"E","state":"rrrGGGrrrrrr","duration":29},{"state":"rrryyyrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"S","state":"rrrrrrGGGrrr","duration":15},{"state":"rrrrrryyyrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"W","state":"rrrrrrrrrGGG","duration":29},{"state":"rrrrrrrrryyy","duration":3},{"state":"rrrrrrrrrrrr","duration":2}
+    ]},
+    "constrained": {"phases": [
+      {"approach":"N","state":"GGGrrrrrrrrr","duration":22},{"state":"yyyrrrrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"E","state":"rrrGGGrrrrrr","duration":22},{"state":"rrryyyrrrrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"S","state":"rrrrrrGGGrrr","duration":22},{"state":"rrrrrryyyrrr","duration":3},{"state":"rrrrrrrrrrrr","duration":2},
+      {"approach":"W","state":"rrrrrrrrrGGG","duration":22},{"state":"rrrrrrrrryyy","duration":3},{"state":"rrrrrrrrrrrr","duration":2}
+    ]}
+  }
+}

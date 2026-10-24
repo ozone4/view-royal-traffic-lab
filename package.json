@@ -1,0 +1,9 @@
+{
+  "name": "view-royal-traffic-lab-browser-qa",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": { "verify:browser": "node scripts/verify_browser.cjs" },
+  "devDependencies": { "playwright": "1.60.0" }
+}

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "view-royal-traffic-lab"
+version = "0.1.0"
+description = "Synthetic SUMO traffic scenarios with matched demand and offline replay"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["eclipse-sumo==1.28.0", "traci==1.28.0", "sumolib==1.28.0"]
+
+[project.urls]
+Homepage = "https://github.com/ozone4/view-royal-traffic-lab"
+Repository = "https://github.com/ozone4/view-royal-traffic-lab"
+Issues = "https://github.com/ozone4/view-royal-traffic-lab/issues"
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+traffic-lab = "traffic_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
